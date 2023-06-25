@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>idBook</title>
+</head>
+<body>
+<p th:text="${book.getTitle + ', ' + book.getAuthor() + ', ' + book.getYear()}"/>
+<div th:if="${owner}">
+    <span>The book is now with </span> <span th:text="${owner.getFullName()}">Person name</span>
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+        <input type="submit" value="Release the book">
+    </form>
+</div>
+
+<div th:if="${people}">
+    <span>This book is availabe. Who to assign?</span>
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+        <label for="person">Choose person</label>
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"/>
+        </select>
+        <input type="submit" value="Assign">
+    </form>
+</div>
+<hr/>
+
+
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+    <input type="submit" value="Edit"/>
+</form>
+<br/>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+<br/>
+<a href="/books">Books</a>
+</body>
+</html>
